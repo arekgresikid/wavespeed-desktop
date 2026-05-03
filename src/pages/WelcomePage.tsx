@@ -314,14 +314,7 @@ export function WelcomePage() {
 
       {/* Footer */}
       <div className="text-center py-3 text-sm text-muted-foreground">
-        <a
-          href="https://wavespeed.ai"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-primary transition-colors"
-        >
-          wavespeed.ai
-        </a>
+        code by waveSpeed & Deploy by RuangRiung
       </div>
     </div>
   );
