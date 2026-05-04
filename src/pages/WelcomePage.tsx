@@ -313,8 +313,17 @@ export function WelcomePage() {
       </div>
 
       {/* Footer */}
-      <div className="text-center py-3 text-sm text-muted-foreground">
-        code by waveSpeed & Deploy by RuangRiung
+      <div className="text-center py-3 text-sm text-muted-foreground animate-in fade-in slide-in-from-bottom-1 duration-700 delay-300 fill-mode-both">
+        {t("welcome.footer").split("RuangRiung")[0]}
+        <a
+          href="https://ruangriung.my.id"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-primary transition-colors font-medium underline-offset-4 hover:underline"
+        >
+          RuangRiung
+        </a>
+        {t("welcome.footer").split("RuangRiung")[1]}
       </div>
     </div>
   );

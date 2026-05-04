@@ -102,10 +102,11 @@
       },
       "workflow": {
         "title": "Workflow",
-        "description": "Build visual AI pipelines with node-based editor",
+        "description": "Build visual AI pipelines with a node-based editor",
         "badge": "New"
       }
-    }
+    },
+    "footer": "Developed by WaveSpeed & Managed by RuangRiung"
   },
   "models": {
     "title": "Models",
@@ -739,6 +740,7 @@
       "aboutText": "An open-source desktop application for running AI models with WaveSpeed API.",
       "viewOnGitHub": "View on GitHub",
       "version": "Version",
+      "collaboration": "Strategic partnership between WaveSpeed AI and RuangRiung.",
       "mobileDescription": "WaveSpeed Mobile - Mobile AI Tools",
       "mobileAboutText": "An open-source mobile application for running AI models with WaveSpeed API."
     }

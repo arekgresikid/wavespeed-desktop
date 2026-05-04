@@ -1380,6 +1380,10 @@ export function SettingsPage() {
           <p className="text-sm text-muted-foreground">
             {t("settings.about.aboutText")}
           </p>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground/80 pt-1">
+            <Rocket className="h-3.5 w-3.5 text-primary/60" />
+            <span>{t("settings.about.collaboration")}</span>
+          </div>
           <Button
             variant="outline"
             onClick={() =>

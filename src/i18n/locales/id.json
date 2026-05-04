@@ -1,4 +1,4 @@
-﻿{
+{
   "common": {
     "loading": "Memuat...",
     "save": "Simpan",
@@ -105,7 +105,8 @@
         "description": "Bangun pipeline AI visual dengan editor berbasis node",
         "badge": "Baru"
       }
-    }
+    },
+    "footer": "Dikembangkan oleh WaveSpeed & Dikelola oleh RuangRiung"
   },
   "models": {
     "title": "Model",
@@ -723,7 +724,8 @@
       "aboutText": "Aplikasi desktop open-source untuk menjalankan model AI dengan API WaveSpeed.",
       "mobileAboutText": "Aplikasi mobile open-source untuk menjalankan model AI dengan API WaveSpeed.",
       "viewOnGitHub": "Lihat di GitHub",
-      "version": "Versi"
+      "version": "Versi",
+      "collaboration": "Kemitraan strategis antara WaveSpeed AI dan RuangRiung."
     }
   },
   "apiKeyRequired": {
