@@ -10,9 +10,11 @@ interface ApiKeyState {
   isValidating: boolean;
   isValidated: boolean;
   hasAttemptedLoad: boolean;
+  balance: number | null;
   setApiKey: (apiKey: string) => Promise<void>;
   loadApiKey: (force?: boolean) => Promise<void>;
   validateApiKey: () => Promise<boolean>;
+  fetchBalance: () => Promise<void>;
 }
 
 // Helper to save API key (electron-store or localStorage fallback)
@@ -41,10 +43,11 @@ export const useApiKeyStore = create<ApiKeyState>((set, get) => ({
   isValidating: false,
   isValidated: false,
   hasAttemptedLoad: false,
+  balance: null,
 
   setApiKey: async (apiKey: string) => {
     apiClient.setApiKey(apiKey);
-    set({ apiKey, isValidated: false });
+    set({ apiKey, isValidated: false, balance: null });
 
     // Save to storage
     await saveApiKey(apiKey);
@@ -75,19 +78,29 @@ export const useApiKeyStore = create<ApiKeyState>((set, get) => ({
   validateApiKey: async () => {
     const { apiKey } = get();
     if (!apiKey) {
-      set({ isValidated: false, isValidating: false });
+      set({ isValidated: false, isValidating: false, balance: null });
       return false;
     }
 
     set({ isValidating: true });
     try {
       // Check account balance to validate the key (lighter than listing models)
-      await apiClient.getBalance();
-      set({ isValidated: true, isValidating: false });
+      const balance = await apiClient.getBalance();
+      set({ isValidated: true, isValidating: false, balance });
       return true;
     } catch {
-      set({ isValidated: false, isValidating: false });
+      set({ isValidated: false, isValidating: false, balance: null });
       return false;
+    }
+  },
+
+  fetchBalance: async () => {
+    if (!get().apiKey) return;
+    try {
+      const balance = await apiClient.getBalance();
+      set({ balance });
+    } catch (error) {
+      console.error("Failed to fetch balance:", error);
     }
   },
 }));

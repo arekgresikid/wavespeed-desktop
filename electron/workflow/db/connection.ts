@@ -130,6 +130,8 @@ export function persistDatabaseNow(): void {
 export function closeDatabase(): void {
   if (db) {
     try {
+      console.log("[Workflow DB] Closing database... (Stack trace follows)");
+      console.trace();
       persistDatabaseNow();
       db.close();
     } catch (error) {

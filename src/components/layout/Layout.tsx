@@ -17,14 +17,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { UpdateBanner } from "./UpdateBanner";
 import {
   TooltipProvider,
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
 } from "@/components/ui/tooltip";
 import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/hooks/useToast";
 import { useApiKeyStore } from "@/stores/apiKeyStore";
-import { usePlaygroundStore } from "@/stores/playgroundStore";
 import { apiClient } from "@/api/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,8 +32,6 @@ import {
   Loader2,
   Zap,
   ExternalLink,
-  Globe,
-  FileText,
 } from "lucide-react";
 // Lazy-load all persistent pages — only loaded when first visited
 const LazyVideoEnhancerPage = lazy(() =>
@@ -119,7 +113,6 @@ const LazyPlaygroundPage = lazy(() =>
 );
 import { useFreeToolListener } from "@/workflow/hooks/useFreeToolListener";
 
-const isElectron = navigator.userAgent.toLowerCase().includes("electron");
 
 // Hoisted constants — avoid re-creation on every render
 const PERSISTENT_PATHS = [
@@ -178,17 +171,18 @@ export function Layout() {
       return next;
     });
   }, []);
+  const { balance, fetchBalance } = useApiKeyStore();
+
+  useEffect(() => {
+    fetchBalance();
+    // Refresh balance every 5 minutes
+    const interval = setInterval(fetchBalance, 5 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, [fetchBalance]);
+
   const navigate = useNavigate();
   const location = useLocation();
   const hasShownUpdateToast = useRef(false);
-
-  // Get current playground model for dynamic titlebar links
-  const playgroundModelId = usePlaygroundStore(
-    (s) => s.getActiveTab()?.selectedModel?.model_id,
-  );
-  const isOnPlayground =
-    location.pathname === "/playground" ||
-    location.pathname.startsWith("/playground/");
 
   // Register free-tool IPC listener globally (must be always mounted for workflow execution)
   useFreeToolListener();
@@ -453,72 +447,46 @@ export function Layout() {
   return (
     <PageResetContext.Provider value={{ resetPage }}>
       <TooltipProvider>
-        <div className="flex flex-col h-screen overflow-hidden relative">
-          {/* Fixed titlebar — draggable region for macOS & Windows (Electron only) */}
-          {isElectron && (
-            <div className="h-8 min-h-[32px] flex items-center justify-center bg-background electron-drag select-none shrink-0 relative z-50 electron-safe-right">
-              {!/mac/i.test(navigator.platform) && (
-                <div className="absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center electron-no-drag">
-                  <AppLogo className="h-5 w-5 shrink-0" />
-                </div>
-              )}
-              {/* Global WebPage & Documentation buttons */}
-              <div
-                className={
-                  /mac/i.test(navigator.platform)
-                    ? "absolute right-3 top-0 bottom-0 flex items-center gap-1 electron-no-drag"
-                    : "absolute right-[140px] top-0 bottom-0 flex items-center electron-no-drag"
-                }
-              >
-                <Tooltip delayDuration={0}>
-                  <TooltipTrigger asChild>
-                    <a
-                      href={
-                        isOnPlayground && playgroundModelId
-                          ? `https://wavespeed.ai/models/${playgroundModelId}`
-                          : "https://wavespeed.ai/dashboard"
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={
-                        /mac/i.test(navigator.platform)
-                          ? "flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-                          : "flex items-center justify-center h-8 w-[46px] text-muted-foreground hover:text-foreground hover:bg-[rgba(255,255,255,0.1)] transition-colors"
-                      }
-                    >
-                      <Globe className="h-4 w-4" />
-                    </a>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">
-                    {t("playground.webPage", "WebPage")}
-                  </TooltipContent>
-                </Tooltip>
-                <Tooltip delayDuration={0}>
-                  <TooltipTrigger asChild>
-                    <a
-                      href={
-                        isOnPlayground && playgroundModelId
-                          ? `https://wavespeed.ai/docs/docs-api/${playgroundModelId.split("/")[0]}/${playgroundModelId.replace(/\//g, "-")}`
-                          : "https://wavespeed.ai/docs"
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={
-                        /mac/i.test(navigator.platform)
-                          ? "flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-                          : "flex items-center justify-center h-8 w-[46px] text-muted-foreground hover:text-foreground hover:bg-[rgba(255,255,255,0.1)] transition-colors"
-                      }
-                    >
-                      <FileText className="h-4 w-4" />
-                    </a>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">
-                    {t("playground.docs", "Documentation")}
-                  </TooltipContent>
-                </Tooltip>
+        <div className="flex flex-col h-screen overflow-hidden relative grid-bg scanline">
+          {/* Refined Header (Matches Reference Image) */}
+          <div className="h-14 flex items-center justify-between px-4 bg-background border-b border-border/50 select-none shrink-0 relative z-50">
+            <div className="flex items-center gap-8">
+              <div className="flex items-center gap-2 cursor-pointer electron-drag" onClick={() => navigate("/")}>
+                <AppLogo className="h-6 w-6" />
+                <span className="font-bold text-lg tracking-tight">WaveSpeed</span>
               </div>
+              
+              <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
+                <button onClick={() => navigate("/models")} className="hover:text-foreground transition-colors">Models</button>
+                <button onClick={() => navigate("/playground")} className="hover:text-foreground transition-colors">Playground</button>
+                <button onClick={() => navigate("/workflow")} className="hover:text-foreground transition-colors">Workflow</button>
+                <button onClick={() => navigate("/free-tools")} className="hover:text-foreground transition-colors">Tools</button>
+              </nav>
             </div>
-          )}
+
+            <div className="flex items-center gap-3 electron-no-drag">
+              {/* Search Bar Placeholder */}
+              <div className="hidden lg:flex items-center bg-secondary/50 rounded-md px-3 py-1.5 w-64 border border-border/50">
+                <span className="text-muted-foreground text-xs">Search models...</span>
+              </div>
+
+              {/* Credits / Wallet */}
+              <div className="flex items-center gap-2 bg-secondary/80 rounded-md px-2 py-1 border border-border/50">
+                <Zap className="h-3.5 w-3.5 text-primary" />
+                <span className="text-xs font-bold">
+                  {balance !== null ? `$${balance.toFixed(2)}` : "---"}
+                </span>
+                <button 
+                  onClick={() => navigate("/settings")}
+                  className="bg-primary text-black rounded px-1.5 py-0.5 text-[10px] font-bold hover:opacity-80"
+                >
+                  +
+                </button>
+              </div>
+
+            </div>
+          </div>
+
           <div className="flex flex-1 overflow-hidden">
             <Sidebar
               collapsed={sidebarCollapsed}

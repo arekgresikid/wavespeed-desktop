@@ -262,27 +262,27 @@ export function WelcomePage() {
               <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full animate-pulse" />
               <Sparkles className="relative h-9 w-9 text-primary" />
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              {isMobile
-                ? "WaveSpeed Mobile"
-                : navigator.userAgent.toLowerCase().includes("electron")
-                  ? "WaveSpeed Desktop"
-                  : "WaveSpeedAI Studio"}
-            </h1>
-          </div>
-          <p className="text-base text-muted-foreground max-w-lg mx-auto">
-            {t("welcome.tagline")}
-          </p>
+          <h1 className="text-3xl font-bold text-foreground">
+            {isMobile
+              ? "WaveSpeed Mobile"
+              : navigator.userAgent.toLowerCase().includes("electron")
+                ? "WaveSpeed Desktop"
+                : "WaveSpeedAI Studio"}
+          </h1>
+        </div>
+        <p className="text-base text-muted-foreground max-w-lg mx-auto">
+          {t("welcome.tagline")}
+        </p>
         </div>
 
         {/* Feature Cards Grid */}
         <div className="w-full max-w-5xl mx-auto mb-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {features.map((feature, index) => (
               <div
                 key={feature.href}
                 className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both"
-                style={{ animationDelay: `${index * 60}ms` }}
+                style={{ animationDelay: `${index * 50}ms` }}
               >
                 <FeatureCard {...feature} />
               </div>
@@ -291,22 +291,21 @@ export function WelcomePage() {
         </div>
 
         {/* CTA Buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5">
+        <div className="flex flex-wrap items-center justify-center gap-3">
           <Button
-            size="default"
+            size="lg"
             onClick={() => navigate("/models")}
-            className="gap-2"
+            className="gap-2 bg-primary text-black hover:bg-primary/90 font-bold px-8 shadow-[0_0_20px_rgba(212,255,0,0.2)]"
           >
-            {t("welcome.getStarted")}
-            <ArrowRight className="h-4 w-4" />
+            {t("welcome.getStarted")} <ArrowRight className="h-4 w-4" />
           </Button>
           <Button
-            size="default"
             variant="outline"
+            size="lg"
             onClick={() => navigate("/free-tools")}
-            className="gap-2"
+            className="border-primary/20 hover:border-primary/50 text-foreground px-8"
           >
-            <Wand2 className="h-4 w-4" />
+            <Wand2 className="h-4 w-4 mr-2" />
             {t("welcome.tryFreeTools")}
           </Button>
         </div>

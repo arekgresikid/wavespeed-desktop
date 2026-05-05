@@ -212,14 +212,18 @@ export const Sidebar = memo(function Sidebar({
           ref={navRef}
           className="relative flex flex-col gap-5 px-0.5 electron-no-drag"
         >
-          {/* Sliding active indicator */}
+          {/* Thin vertical bar for active state (Left) */}
           <div
             className={cn(
-              "absolute rounded-lg bg-primary shadow-sm pointer-events-none",
+              "absolute left-0 w-1 bg-primary rounded-r-full shadow-[0_0_10px_hsl(var(--primary)/0.5)] pointer-events-none",
               hasPositioned.current &&
-                "transition-[top,left,width,height,opacity] duration-300 ease-out",
+                "transition-[top,opacity] duration-300 ease-out",
             )}
-            style={indicatorStyle}
+            style={{
+              top: indicatorStyle.top,
+              height: indicatorStyle.height,
+              opacity: indicatorStyle.opacity,
+            }}
           />
           {navGroups.map((group) => (
             <div
@@ -268,11 +272,11 @@ export const Sidebar = memo(function Sidebar({
                             ? "justify-center px-0"
                             : "justify-start gap-2.5 px-2.5",
                           active
-                            ? "!bg-transparent text-primary-foreground hover:!bg-transparent hover:text-primary-foreground"
-                            : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                            ? "text-foreground bg-transparent hover:bg-white/5"
+                            : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
                           isNewFeature &&
                             !active &&
-                            "ring-2 ring-blue-500/20 hover:ring-blue-500/30",
+                            "ring-1 ring-primary/20",
                         )}
                       >
                         {/* Glow effect for new feature */}

@@ -297,7 +297,7 @@ function createWindow(): void {
     show: false,
     autoHideMenuBar: true,
     icon: join(__dirname, "../../build/icon.png"),
-    backgroundColor: "#080c16",
+    backgroundColor: "#000000",
     titleBarStyle: isMac ? "hiddenInset" : "hidden",
     ...(isMac ? { trafficLightPosition: { x: 10, y: 8 } } : {}),
     ...(process.platform !== "darwin"
@@ -319,7 +319,17 @@ function createWindow(): void {
   });
 
   mainWindow.on("ready-to-show", () => {
+    console.log("[Window] Window ready to show");
     mainWindow?.show();
+  });
+
+  mainWindow.on("close", () => {
+    console.log("[Window] Window 'close' event fired");
+  });
+
+  mainWindow.on("closed", () => {
+    console.log("[Window] Window 'closed' event fired");
+    mainWindow = null;
   });
 
   // macOS: Hide window instead of closing when clicking the red button
@@ -360,7 +370,14 @@ function createWindow(): void {
   );
 
   mainWindow.webContents.on("render-process-gone", (_, details) => {
-    console.error("Render process gone:", details);
+    console.error("[Window] Render process gone:", details.reason, details.exitCode);
+    if (details.reason === "crashed") {
+      console.error("[Window] Renderer crashed. This might be due to GPU/CSS issues.");
+    }
+  });
+
+  mainWindow.webContents.on("unresponsive", () => {
+    console.warn("[Window] Renderer became unresponsive");
   });
 
   // Load the app
@@ -2078,8 +2095,15 @@ app.on("before-quit", () => {
 });
 
 app.on("window-all-closed", () => {
-  closeWorkflowDatabase();
+  console.log("[App] window-all-closed event fired");
   if (process.platform !== "darwin") {
+    console.log("[App] Quitting application (not macOS)");
     app.quit();
   }
 });
+
+app.on("will-quit", () => {
+  console.log("[App] will-quit event fired. Performing final cleanup...");
+  closeWorkflowDatabase();
+});
+

@@ -29,16 +29,11 @@ function applyTheme(theme: Theme) {
   }
 
   // Update Electron title bar overlay colors to match theme
-  try {
-    (
-      window as unknown as {
-        electronAPI?: {
-          updateTitlebarTheme?: (isDark: boolean) => Promise<void>;
-        };
-      }
-    ).electronAPI?.updateTitlebarTheme?.(isDark);
-  } catch {
-    /* not in Electron */
+  const api = (window as any).electronAPI;
+  if (api && typeof api.updateTitlebarTheme === "function") {
+    api.updateTitlebarTheme(isDark).catch((err: any) => {
+      console.warn("Failed to update titlebar theme:", err);
+    });
   }
 }
 

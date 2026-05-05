@@ -68,6 +68,9 @@ export default defineConfig({
       port: 5173,
       strictPort: false, // Auto-find available port if 5173 is in use
       host: "0.0.0.0",
+      watch: {
+        ignored: ["**/workflow-data/**"],
+      },
     },
     worker: {
       format: "es",

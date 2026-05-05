@@ -10,71 +10,68 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 65% 95%;
-    --accent-foreground: 217 91% 45%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 217 91% 60%;
+    --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
 
-    /* Gradient colors - Blue to Cyan */
-    --gradient-start: 217 91% 60%;
+    /* Gradient colors - Standard Blue */
+    --gradient-start: 221.2 83.2% 53.3%;
     --gradient-mid: 199 89% 48%;
     --gradient-end: 186 94% 42%;
 
-    /* Sidebar text color */
+    /* Sidebar */
     --sidebar-text-color: #374151;
     --sidebar-text-hover: #111827;
-
-    /* Content area */
     --content-bg: 0 0% 100%;
     --content-area: 220 10% 99.2%;
     --panel-bg: 0 0% 100%;
   }
 
   .dark {
-    --background: 222 47% 6%;
-    --foreground: 0 0% 95%;
-    --card: 222 40% 10%;
-    --card-foreground: 0 0% 95%;
-    --popover: 222 40% 10%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 217 91% 65%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 217 30% 15%;
-    --secondary-foreground: 0 0% 95%;
-    --muted: 217 30% 15%;
-    --muted-foreground: 215 20% 60%;
-    --accent: 217 50% 18%;
-    --accent-foreground: 217 91% 75%;
-    --destructive: 0 62.8% 50%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 217 25% 16%;
-    --input: 217 30% 18%;
-    --ring: 217 91% 65%;
+    --background: 0 0% 2%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 72 100% 50%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 72 100% 50%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 12%;
+    --input: 0 0% 12%;
+    --ring: 72 100% 50%;
 
-    /* Gradient colors - Blue to Cyan */
-    --gradient-start: 217 91% 65%;
-    --gradient-mid: 199 89% 55%;
-    --gradient-end: 186 94% 50%;
+    /* Pro Dark Gradients */
+    --gradient-start: 72 100% 50%;
+    --gradient-mid: 72 100% 40%;
+    --gradient-end: 72 100% 30%;
 
-    /* Sidebar text color */
-    --sidebar-text-color: #e5e7eb;
+    /* Sidebar & Panels */
+    --sidebar-text-color: #a1a1aa;
     --sidebar-text-hover: #ffffff;
-
-    /* Content area */
-    --content-bg: 222 47% 6%;
-    --content-area: 222 44% 8%;
-    --panel-bg: 222 40% 10%;
+    --content-bg: 0 0% 2%;
+    --content-area: 0 0% 4%;
+    --panel-bg: 0 0% 6%;
   }
+
 }
 
 @layer base {
@@ -224,6 +221,43 @@
 
   .glow-sm {
     box-shadow: 0 0 10px hsl(var(--primary) / 0.2);
+  }
+
+  .neon-glow {
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.5), 0 0 20px hsl(var(--primary) / 0.3);
+  }
+
+  .neon-border {
+    box-shadow: 0 0 10px hsl(var(--primary) / 0.3), inset 0 0 5px hsl(var(--primary) / 0.2);
+    border-color: hsl(var(--primary) / 0.5);
+  }
+
+  .scanline {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scanline::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 50%,
+      rgba(0, 255, 0, 0.02) 51%,
+      transparent 51%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0.5;
+  }
+
+  .grid-bg {
+    background-image: 
+      linear-gradient(rgba(0, 255, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 0, 0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
   }
 }
 
