@@ -5,11 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob: local-asset:; connect-src 'self' https://api.wavespeed.ai https://*.wavespeed.ai https://*.cloudfront.net https://raw.githubusercontent.com https://github.com https://*.github.com https://*.githubusercontent.com https://unpkg.com https://cdn.jsdelivr.net https://huggingface.co https://*.huggingface.co https://*.hf.co blob: data:; media-src 'self' https: blob: local-asset:; worker-src 'self' blob:"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob: local-asset: https://www.google-analytics.com; connect-src 'self' https://api.wavespeed.ai https://*.wavespeed.ai https://*.cloudfront.net https://raw.githubusercontent.com https://github.com https://*.github.com https://*.githubusercontent.com https://unpkg.com https://cdn.jsdelivr.net https://huggingface.co https://*.huggingface.co https://*.hf.co https://www.google-analytics.com blob: data:; media-src 'self' https: blob: local-asset:; worker-src 'self' blob:"
     />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/icon-512.png" />
     <meta name="description" content="wavespeed, kolaborasi wavespeed & RuangRiung AI Image Generator" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6D83KDQDTC"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-6D83KDQDTC');
+    </script>
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
