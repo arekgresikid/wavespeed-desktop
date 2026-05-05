@@ -31,6 +31,7 @@ import {
   EyeOff,
   Loader2,
   Zap,
+  Search,
   ExternalLink,
 } from "lucide-react";
 // Lazy-load all persistent pages — only loaded when first visited
@@ -465,9 +466,26 @@ export function Layout() {
             </div>
 
             <div className="flex items-center gap-3 electron-no-drag">
-              {/* Search Bar Placeholder */}
-              <div className="hidden lg:flex items-center bg-secondary/50 rounded-md px-3 py-1.5 w-64 border border-border/50">
-                <span className="text-muted-foreground text-xs">Search models...</span>
+              {/* Functional Search Bar */}
+              <div className="hidden lg:flex items-center bg-secondary/50 rounded-md px-3 py-1 w-64 border border-border/50 focus-within:border-primary/50 transition-colors">
+                <Search className="h-3.5 w-3.5 text-muted-foreground mr-2" />
+                <input
+                  type="text"
+                  placeholder="Search models..."
+                  className="bg-transparent border-none outline-none text-xs w-full placeholder:text-muted-foreground/50"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      const query = (e.target as HTMLInputElement).value;
+                      useModelsStore.getState().setSearchQuery(query);
+                      navigate("/models");
+                    }
+                  }}
+                  onChange={(e) => {
+                    // Optional: Live update if you want, but Enter is safer for global nav
+                    useModelsStore.getState().setSearchQuery(e.target.value);
+                  }}
+                  defaultValue={useModelsStore.getState().searchQuery}
+                />
               </div>
 
               {/* Credits / Wallet */}

@@ -266,6 +266,8 @@ export function ExplorePanel({
     toggleFavorite,
     isFavorite,
     fetchModels,
+    searchQuery,
+    setSearchQuery,
     selectedType: typeFilter,
     setSelectedType: setTypeFilter,
     typeFiltersOpen,
@@ -277,22 +279,28 @@ export function ExplorePanel({
   const [sortKey, setSortKey] = useState<SortKey>("popularity");
   const [sortAsc, setSortAsc] = useState(false);
 
-  // Local search state with debounce
-  const [searchInput, setSearchInput] = useState("");
-  const [searchDebounced, setSearchDebounced] = useState("");
+  // Local search state for immediate UI feedback before store update (debounced)
+  const [searchInput, setSearchInput] = useState(searchQuery);
   const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  
+  // Sync local input with store query (e.g. when searching from top bar)
+  useEffect(() => {
+    setSearchInput(searchQuery);
+  }, [searchQuery]);
+
   const handleSearchChange = useCallback((value: string) => {
     setSearchInput(value);
     if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
-    searchTimerRef.current = setTimeout(() => setSearchDebounced(value), 250);
-  }, []);
+    searchTimerRef.current = setTimeout(() => setSearchQuery(value), 250);
+  }, [setSearchQuery]);
+
   const handleSearchClear = useCallback(() => {
     setSearchInput("");
-    setSearchDebounced("");
+    setSearchQuery("");
     if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
-  }, []);
+  }, [setSearchQuery]);
 
-  const search = externalSearch ?? searchDebounced;
+  const search = externalSearch ?? searchQuery;
 
   const allTypes = useMemo(() => {
     const typeSet = new Set<string>();
