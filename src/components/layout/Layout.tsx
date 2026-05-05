@@ -21,6 +21,7 @@ import {
 import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/hooks/useToast";
 import { useApiKeyStore } from "@/stores/apiKeyStore";
+import { useModelsStore } from "@/stores/modelsStore";
 import { apiClient } from "@/api/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
